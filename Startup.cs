@@ -11,6 +11,7 @@ namespace home_backend
 {
     public class Startup
     {
+        readonly string HomeFrontendPolicy = "_homeFrontendPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +27,8 @@ namespace home_backend
                     options => options.ServerVersion(new System.Version(10,5,5), ServerType.MariaDb)
             ));
 
+            services.AddCors();
+
             services.AddControllers();
         }
 
@@ -40,6 +43,10 @@ namespace home_backend
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(
+                options => options.WithOrigins(Configuration.GetValue<string>("HomeFrontendUrl")).AllowAnyMethod()
+            );
 
             app.UseAuthorization();
 
