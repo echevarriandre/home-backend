@@ -9,7 +9,7 @@ using home_backend.Models;
 
 namespace home_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/links")]
     [ApiController]
     public class LinkController : ControllerBase
     {
