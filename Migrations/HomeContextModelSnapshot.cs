@@ -2,34 +2,37 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using home_backend.Models;
+using home.Data;
 
-namespace home_backend.Migrations
+namespace home.Migrations
 {
-    [DbContext(typeof(LinkContext))]
-    partial class LinkContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(HomeContext))]
+    partial class HomeContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
-                .HasAnnotation("Relational:MaxIdentifierLength", 64);
+                .HasAnnotation("Relational:MaxIdentifierLength", 64)
+                .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("Link", b =>
+            modelBuilder.Entity("home.Models.Link", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Type")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Url")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -38,140 +41,140 @@ namespace home_backend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1L,
+                            Id = 1,
                             Name = "gmail 1",
                             Type = "cloud",
                             Url = "https://mail.google.com/mail/u/0/#inbox"
                         },
                         new
                         {
-                            Id = 2L,
+                            Id = 2,
                             Name = "gmail 2",
                             Type = "cloud",
                             Url = "https://mail.google.com/mail/u/1/#inbox"
                         },
                         new
                         {
-                            Id = 3L,
+                            Id = 3,
                             Name = "gdrive",
                             Type = "cloud",
                             Url = "https://drive.google.com/drive/u/0/"
                         },
                         new
                         {
-                            Id = 4L,
+                            Id = 4,
                             Name = "gphotos",
                             Type = "cloud",
                             Url = "https://photos.google.com/?hl=es"
                         },
                         new
                         {
-                            Id = 5L,
+                            Id = 5,
                             Name = "youtube",
                             Type = "social",
                             Url = "https://www.youtube.com/"
                         },
                         new
                         {
-                            Id = 6L,
+                            Id = 6,
                             Name = "reddit",
                             Type = "social",
                             Url = "https://www.reddit.com/"
                         },
                         new
                         {
-                            Id = 7L,
+                            Id = 7,
                             Name = "twitch",
                             Type = "social",
                             Url = "https://www.twitch.tv/directory"
                         },
                         new
                         {
-                            Id = 8L,
+                            Id = 8,
                             Name = "twitter",
                             Type = "social",
                             Url = "https://www.twitter.com/"
                         },
                         new
                         {
-                            Id = 9L,
+                            Id = 9,
                             Name = "whatsapp",
                             Type = "social",
                             Url = "https://web.whatsapp.com/"
                         },
                         new
                         {
-                            Id = 10L,
+                            Id = 10,
                             Name = "fake email",
                             Type = "pirating",
                             Url = "https://temp-mail.org/"
                         },
                         new
                         {
-                            Id = 11L,
+                            Id = 11,
                             Name = "nyaa",
                             Type = "pirating",
                             Url = "https://nyaa.si/"
                         },
                         new
                         {
-                            Id = 12L,
+                            Id = 12,
                             Name = "rarbg",
                             Type = "pirating",
                             Url = "https://rargb.to/"
                         },
                         new
                         {
-                            Id = 13L,
+                            Id = 13,
                             Name = "fitgirl",
                             Type = "pirating",
                             Url = "http://fitgirl-repacks.site/"
                         },
                         new
                         {
-                            Id = 14L,
+                            Id = 14,
                             Name = "cs.rin.ru",
                             Type = "pirating",
                             Url = "https://cs.rin.ru"
                         },
                         new
                         {
-                            Id = 15L,
+                            Id = 15,
                             Name = "drive bypass",
                             Type = "pirating",
                             Url = "https://gdbypass.host/"
                         },
                         new
                         {
-                            Id = 16L,
+                            Id = 16,
                             Name = "r/piracy",
                             Type = "pirating",
                             Url = "https://www.reddit.com/r/Piracy/wiki/megathread"
                         },
                         new
                         {
-                            Id = 17L,
+                            Id = 17,
                             Name = "github",
                             Type = "services",
                             Url = "https://github.com/"
                         },
                         new
                         {
-                            Id = 18L,
+                            Id = 18,
                             Name = "bitbucket",
                             Type = "services",
                             Url = "https://bitbucket.com/"
                         },
                         new
                         {
-                            Id = 19L,
+                            Id = 19,
                             Name = "gmaps",
                             Type = "services",
                             Url = "https://www.google.com/maps"
                         },
                         new
                         {
-                            Id = 20L,
+                            Id = 20,
                             Name = "wetransfer",
                             Type = "services",
                             Url = "https://wetransfer.com/"

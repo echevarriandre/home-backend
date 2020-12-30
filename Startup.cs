@@ -1,59 +1,87 @@
+using System;
+using AutoMapper;
+using home.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using home_backend.Models;
 
-namespace home_backend
+namespace home
 {
-    public class Startup
-    {
-        readonly string HomeFrontendPolicy = "_homeFrontendPolicy";
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+	public class Startup
+	{
+		public Startup(IConfiguration configuration)
+		{
+			Configuration = configuration;
+		}
 
-        public IConfiguration Configuration { get; }
+		public IConfiguration Configuration { get; }
+		readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddDbContext<LinkContext>(opt =>
-               opt.UseMySql(Configuration.GetConnectionString("DefaultConnection"),
-                    options => options.ServerVersion(new System.Version(10,5,5), ServerType.MariaDb)
-            ));
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services)
+		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy(
+					name: MyAllowSpecificOrigins,
+					builder =>
+					{
+						builder.WithOrigins("*");
+					});
+			});
 
-            services.AddCors();
+			services.AddControllers();
+			services.AddSwaggerGen(c =>
+			{
+				c.SwaggerDoc("v1", new OpenApiInfo { Title = "home", Version = "v1" });
+			});
 
-            services.AddControllers();
-        }
+			services.AddScoped<IHomeRepo, SqlHomeRepo>();
+			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			services.AddDbContextPool<HomeContext>(
+				dbContextOptions => dbContextOptions
+					.UseMySql(
+						Configuration.GetConnectionString("HomeConnection"),
+						new MariaDbServerVersion(new Version(10, 3, 25)),
+						mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
+					)
+					.EnableSensitiveDataLogging()
+					.EnableDetailedErrors()
+			);
+		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseSwagger();
+				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "home v1"));
+			}
 
-            app.UseHttpsRedirection();
+			using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+			{
+				scope.ServiceProvider.GetRequiredService<HomeContext>().Database.Migrate();
+			}
 
-            app.UseRouting();
+			app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseCors(
-                options => options.WithOrigins(Configuration.GetValue<string>("HomeFrontendUrl")).AllowAnyMethod()
-            );
+			app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+			app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
-    }
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapControllers();
+			});
+		}
+	}
 }

@@ -1,13 +1,11 @@
+using home.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace home_backend.Models
+namespace home.Data
 {
-    public class LinkContext : DbContext
+    public class HomeContext : DbContext
     {
-        public LinkContext(DbContextOptions<LinkContext> options)
-            : base(options)
-        {
-        }
+        public HomeContext(DbContextOptions<HomeContext> options) : base(options) { }
 
         public DbSet<Link> Links { get; set; }
 

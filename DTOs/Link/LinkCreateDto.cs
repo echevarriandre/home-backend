@@ -1,17 +1,13 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace home.Models
+namespace home.DTOs.Link
 {
-    public class Link {
-        [Key]
-        public int Id { get; set; }
-
+    public class LinkCreateDto
+    {
         [Required]
         public string Name { get; set; }
-
         [Required]
         public string Url { get; set; }
-        
         [Required]
         public string Type { get; set; }
     }
