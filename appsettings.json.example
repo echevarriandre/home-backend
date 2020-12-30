@@ -1,0 +1,13 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "HomeConnection": "server=IP; user id=DB_USER;password=DB_USER_PASS;port=PORT;database=DB_HOME"
+  }
+}
