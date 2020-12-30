@@ -6,6 +6,10 @@
       "Microsoft.Hosting.Lifetime": "Information"
     }
   },
+  "Jwt": {
+    "Key": "KEY",
+    "Issuer": "http://localhost:5000"
+  },
   "AllowedHosts": "*",
   "ConnectionStrings": {
     "HomeConnection": "server=IP; user id=DB_USER;password=DB_USER_PASS;port=PORT;database=DB_HOME"

@@ -1,5 +1,5 @@
 using AutoMapper;
-using home.DTOs.Link;
+using home.DTOs;
 using home.Models;
 
 namespace home.Profiles

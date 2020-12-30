@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace home.DTOs.Link
+namespace home.DTOs
 {
 	public class LinkUpdateDto
 	{

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using AutoMapper;
-using home.Data;
-using home.DTOs.Link;
+using home.DTOs;
+using home.Repositories;
 using home.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace home.Controllers
 {
@@ -11,17 +12,17 @@ namespace home.Controllers
 	[ApiController]
 	public class LinksController : ControllerBase
 	{
-		private readonly IHomeRepo _repository;
+		private readonly LinkRepo _repository;
 		private readonly IMapper _mapper;
 
-		public LinksController(IHomeRepo repository, IMapper mapper)
+		public LinksController(LinkRepo repository, IMapper mapper)
 		{
 			_repository = repository;
 			_mapper = mapper;
 		}
 
 		// GET api/links
-		[HttpGet]
+		[HttpGet, Authorize]
 		public ActionResult<IEnumerable<LinkReadDto>> GetAllLinks()
 		{
 			IEnumerable<Link> linkItems = _repository.GetAllLinks();
@@ -30,7 +31,7 @@ namespace home.Controllers
 		}
 
 		// GET api/links/5
-		[HttpGet("{id}", Name = "GetLinkById")]
+		[HttpGet("{id}", Name = "GetLinkById"), Authorize]
 		public ActionResult<LinkReadDto> GetLinkById(int id)
 		{
 			Link link = _repository.GetLinkById(id);
@@ -41,7 +42,7 @@ namespace home.Controllers
 		}
 
 		// POST api/links
-		[HttpPost]
+		[HttpPost, Authorize]
 		public ActionResult<LinkReadDto> CreateLink(LinkCreateDto linkCreateDto)
 		{
 			Link linkModel = _mapper.Map<Link>(linkCreateDto);
@@ -54,7 +55,7 @@ namespace home.Controllers
 		}
 
 		// PUT api/links/{id}
-		[HttpPut("{id}")]
+		[HttpPut("{id}"), Authorize]
 		public ActionResult<LinkReadDto> UpdateLink(int id, LinkUpdateDto linkUpdateDto)
 		{
 			Link dbLink = _repository.GetLinkById(id);
@@ -70,7 +71,7 @@ namespace home.Controllers
 		}
 
 		// DELETE api/links/{id}
-		[HttpDelete("{id}", Name = "DeleteLink")]
+		[HttpDelete("{id}", Name = "DeleteLink"), Authorize]
 		public ActionResult<LinkReadDto> DeleteLink(int id)
 		{
 			Link dbLink = _repository.GetLinkById(id);

@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using home.Data;
 using home.Models;
+using System.Linq;
+using System.Collections.Generic;
 
-namespace home.Data
+namespace home.Repositories
 {
-	public class SqlHomeRepo : IHomeRepo
+	public class LinkRepo : BaseRepo
 	{
-		private readonly HomeContext _context;
-
-		public SqlHomeRepo(HomeContext context)
+		public LinkRepo(HomeContext context) : base(context)
 		{
-			_context = context;
 		}
-
 
 		public IEnumerable<Link> GetAllLinks()
 		{
@@ -47,11 +44,6 @@ namespace home.Data
 
 			_context.Links.Remove(link);
 			return link;
-		}
-
-		public bool SaveChanges()
-		{
-			return (_context.SaveChanges() >= 0);
 		}
 	}
 }

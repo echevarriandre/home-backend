@@ -1,13 +1,16 @@
 using System;
+using System.Text;
 using AutoMapper;
 using home.Data;
+using home.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Microsoft.IdentityModel.Tokens;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace home
@@ -36,12 +39,39 @@ namespace home
 			});
 
 			services.AddControllers();
-			services.AddSwaggerGen(c =>
-			{
-				c.SwaggerDoc("v1", new OpenApiInfo { Title = "home", Version = "v1" });
-			});
 
-			services.AddScoped<IHomeRepo, SqlHomeRepo>();
+			var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]);
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+				.AddJwtBearer(options =>
+				{
+					options.TokenValidationParameters = new TokenValidationParameters
+					{
+						// Clock skew compensates for server time drift.
+						// We recommend 5 minutes or less:
+						ClockSkew = TimeSpan.FromMinutes(0),
+
+						// Specify the key used to sign the token:
+						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+						RequireSignedTokens = true,
+						ValidateIssuerSigningKey = true,
+
+						// Ensure the token hasn't expired:
+						RequireExpirationTime = true,
+						ValidateLifetime = true,
+
+						// Ensure the token audience matches our audience value (default true):
+						ValidateAudience = true,
+						ValidAudience = Configuration["Jwt:Issuer"],
+
+						// Ensure the token was issued by a trusted authorization server (default true):
+						ValidateIssuer = true,
+						ValidIssuer = Configuration["Jwt:Issuer"]
+					};
+				});
+
+			services.AddScoped<LinkRepo>();
+			services.AddScoped<UserRepo>();
+
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 			services.AddDbContextPool<HomeContext>(
 				dbContextOptions => dbContextOptions
@@ -61,8 +91,6 @@ namespace home
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseSwagger();
-				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "home v1"));
 			}
 
 			using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
@@ -75,6 +103,8 @@ namespace home
 			app.UseHttpsRedirection();
 
 			app.UseRouting();
+
+			app.UseAuthentication();
 
 			app.UseAuthorization();
 

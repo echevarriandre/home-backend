@@ -1,4 +1,4 @@
-namespace home.DTOs.Link
+namespace home.DTOs
 {
 	public class LinkReadDto
 	{

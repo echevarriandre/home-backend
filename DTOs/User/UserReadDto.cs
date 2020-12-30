@@ -1,4 +1,4 @@
-namespace home.DTOs.User
+namespace home.DTOs
 {
 	public class UserReadDto
 	{
