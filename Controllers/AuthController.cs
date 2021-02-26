@@ -57,7 +57,7 @@ namespace home.Controllers
 				issuer: _configuration["Jwt:Issuer"],
 				audience: _configuration["Jwt:Issuer"],
 				claims: claims,
-				expires: DateTime.Now.AddDays(3),
+				expires: DateTime.Now.AddDays(30),
 				signingCredentials: creds);
 
 			return new JwtSecurityTokenHandler().WriteToken(token);
