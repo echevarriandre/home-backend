@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace home.Controllers
 {
-	[Route("api/links")]
+	[Route("links")]
 	[ApiController]
 	public class LinksController : ControllerBase
 	{
@@ -21,7 +21,7 @@ namespace home.Controllers
 			_mapper = mapper;
 		}
 
-		// GET api/links
+		// GET /links
 		[HttpGet, Authorize]
 		public ActionResult<IEnumerable<LinkReadDto>> GetAllLinks()
 		{
@@ -30,7 +30,7 @@ namespace home.Controllers
 			return Ok(_mapper.Map<IEnumerable<LinkReadDto>>(linkItems));
 		}
 
-		// GET api/links/5
+		// GET /links/5
 		[HttpGet("{id}", Name = "GetLinkById"), Authorize]
 		public ActionResult<LinkReadDto> GetLinkById(int id)
 		{
@@ -41,7 +41,7 @@ namespace home.Controllers
 			return NotFound();
 		}
 
-		// POST api/links
+		// POST /links
 		[HttpPost, Authorize]
 		public ActionResult<LinkReadDto> CreateLink(LinkCreateDto linkCreateDto)
 		{
@@ -54,7 +54,7 @@ namespace home.Controllers
 			return CreatedAtRoute(nameof(GetLinkById), new { Id = linkReadDto.Id }, linkReadDto);
 		}
 
-		// PUT api/links/{id}
+		// PUT /links/{id}
 		[HttpPut("{id}"), Authorize]
 		public ActionResult<LinkReadDto> UpdateLink(int id, LinkUpdateDto linkUpdateDto)
 		{
@@ -70,7 +70,7 @@ namespace home.Controllers
 			return Ok(dbLink);
 		}
 
-		// DELETE api/links/{id}
+		// DELETE /links/{id}
 		[HttpDelete("{id}", Name = "DeleteLink"), Authorize]
 		public ActionResult<LinkReadDto> DeleteLink(int id)
 		{

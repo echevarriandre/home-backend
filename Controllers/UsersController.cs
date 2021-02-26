@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace home.Controllers
 {
-	[Route("api/users")]
+	[Route("users")]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
@@ -21,7 +21,7 @@ namespace home.Controllers
 			_mapper = mapper;
 		}
 
-		// GET api/users
+		// GET /users
 		[HttpGet, Authorize]
 		public ActionResult<IEnumerable<UserReadDto>> GetAllUsers()
 		{
@@ -30,7 +30,7 @@ namespace home.Controllers
 			return Ok(_mapper.Map<IEnumerable<UserReadDto>>(userItems));
 		}
 
-		// GET api/users/5
+		// GET /users/5
 		[HttpGet("{id}", Name = "GetUserById"), Authorize]
 		public ActionResult<UserReadDto> GetUserById(int id)
 		{

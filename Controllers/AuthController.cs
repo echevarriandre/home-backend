@@ -12,7 +12,7 @@ using System;
 
 namespace home.Controllers
 {
-	[Route("auth/login")]
+	[Route("auth")]
 	public class AuthController : ControllerBase
 	{
 		private readonly UserRepo _usersRepo;
