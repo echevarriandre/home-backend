@@ -23,20 +23,13 @@ namespace home
 		}
 
 		public IConfiguration Configuration { get; }
-		readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors(options =>
-			{
-				options.AddPolicy(
-					name: MyAllowSpecificOrigins,
-					builder =>
-					{
-						builder.WithOrigins("*");
-					});
-			});
+			services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin()
+				.AllowAnyMethod()
+				.AllowAnyHeader()));
 
 			services.AddControllers();
 
@@ -98,7 +91,7 @@ namespace home
 				scope.ServiceProvider.GetRequiredService<HomeContext>().Database.Migrate();
 			}
 
-			app.UseCors(MyAllowSpecificOrigins);
+			app.UseCors("AllowAll");
 
 			app.UseHttpsRedirection();
 
