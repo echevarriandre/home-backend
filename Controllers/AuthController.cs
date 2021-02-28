@@ -30,7 +30,7 @@ namespace home.Controllers
 		{
 			User dbUser = _usersRepo.GetUserByUsername(login.Username);
 			if (dbUser == null)
-				return NotFound(new { error = "Invalid username" });
+				return NotFound(new { error = "User account not found" });
 
 			if (BCrypt.Net.BCrypt.Verify(login.Password, dbUser.Password))
 			{
@@ -41,7 +41,7 @@ namespace home.Controllers
 				return Ok(authDto);
 			}
 
-			return NotFound(new { error = "Invalid password" });
+			return Unauthorized(new { error = "Invalid password" });
 		}
 
 		private string BuildToken(User user)
