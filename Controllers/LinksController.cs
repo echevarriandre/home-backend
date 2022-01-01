@@ -31,7 +31,7 @@ namespace home.Controllers
 		}
 
 		// GET /links/5
-		[HttpGet("{id}", Name = "GetLinkById"), Authorize]
+		[HttpGet("{id:int}", Name = "GetLinkById"), Authorize]
 		public ActionResult<LinkReadDto> GetLinkById(int id)
 		{
 			Link link = _repository.GetLinkById(id);
@@ -55,7 +55,7 @@ namespace home.Controllers
 		}
 
 		// PUT /links/{id}
-		[HttpPut("{id}"), Authorize]
+		[HttpPut("{id:int}"), Authorize]
 		public ActionResult<LinkReadDto> UpdateLink(int id, LinkUpdateDto linkUpdateDto)
 		{
 			Link dbLink = _repository.GetLinkById(id);
@@ -71,7 +71,7 @@ namespace home.Controllers
 		}
 
 		// DELETE /links/{id}
-		[HttpDelete("{id}", Name = "DeleteLink"), Authorize]
+		[HttpDelete("{id:int}", Name = "DeleteLink"), Authorize]
 		public ActionResult<LinkReadDto> DeleteLink(int id)
 		{
 			Link dbLink = _repository.GetLinkById(id);

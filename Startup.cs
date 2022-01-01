@@ -69,9 +69,8 @@ namespace home
 			services.AddDbContextPool<HomeContext>(
 				dbContextOptions => dbContextOptions
 					.UseMySql(
-						Configuration.GetConnectionString("HomeConnection"),
-						new MariaDbServerVersion(new Version(10, 3, 25)),
-						mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)
+						Configuration.GetConnectionString("home"),
+						new MariaDbServerVersion(new Version(10, 6, 5))
 					)
 					.EnableSensitiveDataLogging()
 					.EnableDetailedErrors()
