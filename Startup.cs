@@ -34,6 +34,7 @@ namespace home
 			services.AddControllers();
 
 			var key = Encoding.ASCII.GetBytes(Configuration["Jwt:Key"]);
+			var issuer = Configuration["Jwt:Issuer"];
 			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 				.AddJwtBearer(options =>
 				{
@@ -44,7 +45,7 @@ namespace home
 						ClockSkew = TimeSpan.FromMinutes(0),
 
 						// Specify the key used to sign the token:
-						IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"])),
+						IssuerSigningKey = new SymmetricSecurityKey(key),
 						RequireSignedTokens = true,
 						ValidateIssuerSigningKey = true,
 
@@ -54,11 +55,11 @@ namespace home
 
 						// Ensure the token audience matches our audience value (default true):
 						ValidateAudience = true,
-						ValidAudience = Configuration["Jwt:Issuer"],
+						ValidAudience = issuer,
 
 						// Ensure the token was issued by a trusted authorization server (default true):
 						ValidateIssuer = true,
-						ValidIssuer = Configuration["Jwt:Issuer"]
+						ValidIssuer = issuer
 					};
 				});
 
